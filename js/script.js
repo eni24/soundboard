@@ -3,19 +3,31 @@
     $("body.no-javascript").removeClass("no-javascript")
 
 
-    $("audio").removeAttr("controls").each(function(i, audioElement) {
+    $("audio").each(function(i, audioElement) {
         var audio = $(this);
         var that = this;
 
+        that.volume = audio.attr("vol");
+
         $("#doc").append($('<tr><td id="td' + audio.attr("key") + '">' + audio.attr("key") + '</td><td><a id="el' + audio.attr("key") + '" href="#"><b>' + audio.attr("name") + '</b></a></td></tr>').click(function() {that.pause(); that.currentTime=0; that.play();}));
+
+        audio.on("ended", function() {
+            $("#td" + audio.attr("key"))[0].style = "background-color: #fffffff";
+        });
+
     });
 
 });
 
 $(document).keypress(function (e) {
 
+    if (" " === String.fromCharCode(e.which)) {
+        stopAllAudio();
+        return;
+    }
+
     //console.log(String.fromCharCode(e.which));
-    $("audio").removeAttr("controls").each(function(i, audioElement) {
+    $("audio").each(function(i, audioElement) {
         var audio = $(this);
 
         //console.log(audio.attr("key"));
@@ -24,9 +36,14 @@ $(document).keypress(function (e) {
             $("#el" + audio.attr("key"))[0].click();
             $("#td" + audio.attr("key"))[0].style = "background-color: #ff0000";
             setTimeout(function() {
-                $("#td" + audio.attr("key"))[0].style = "background-color: #ffffff";
-            }, 400);
+                $("#td" + audio.attr("key"))[0].style = "background-color: #ffb0b0";
+            }, 60);
         }
 
     });
 });
+
+function stopAllAudio() {
+    document.location.reload();
+}
+
