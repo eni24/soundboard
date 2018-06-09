@@ -2,12 +2,19 @@
     // Remove no-javascript class if js is enabled
     $("body.no-javascript").removeClass("no-javascript")
 
+    var counter = 0;
 
     $("audio").each(function(i, audioElement) {
         var audio = $(this);
         var that = this;
 
         that.volume = audio.attr("vol");
+
+        if (counter % 2 === 0) {
+            $("#doc").append($('<tr><td colspan="2"></td></tr>'));
+        }
+
+        counter++;
 
         $("#doc").append($('<tr><td id="td' + audio.attr("key") + '">' + audio.attr("key") + '</td><td><a id="el' + audio.attr("key") + '" href="#"><b>' + audio.attr("name") + '</b></a></td></tr>').click(function() {that.pause(); that.currentTime=0; that.play();}));
 
@@ -23,6 +30,31 @@ $(document).keypress(function (e) {
 
     if (" " === String.fromCharCode(e.which)) {
         stopAllAudio();
+        return;
+    }
+
+    if ("x" === String.fromCharCode(e.which)) {
+        window.setInterval(fadeOut,50)
+        return;
+    }
+
+    if ("-" === String.fromCharCode(e.which)) {
+        var v = $("audio")[0].volume - 0.05;
+        if (v <= 0) {
+            v = 0;
+        }
+        $("audio")[0].volume = v;
+        $("audio")[1].volume = v;
+        return;
+    }
+
+    if ("+" === String.fromCharCode(e.which)) {
+        var v = $("audio")[0].volume + 0.05;
+        if (v >= 1) {
+            v = 1;
+        }
+        $("audio")[0].volume = v;
+        $("audio")[1].volume = v;
         return;
     }
 
@@ -47,3 +79,11 @@ function stopAllAudio() {
     document.location.reload();
 }
 
+function fadeOut() {
+    var v = $("audio")[0].volume - 0.010;
+    if (v <= 0) {
+       document.location.reload();
+    }
+    $("audio")[0].volume = v;
+    $("audio")[1].volume = v;
+}
