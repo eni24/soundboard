@@ -10,18 +10,31 @@
 
         that.volume = audio.attr("vol");
 
-        if (counter % 2 === 0) {
-            $("#doc").append($('<tr><td colspan="2"></td></tr>'));
+
+        if (counter < 16 ) {
+
+            if (counter % 2 === 0) {
+                $("#doc").append($('<tr><td colspan="2"></td></tr>'));
+            }
+
+            $("#doc").append($('<tr><td id="td' + audio.attr("key") + '">' + audio.attr("key") + '</td><td><a id="el' + audio.attr("key") + '" href="#"><b>' + audio.attr("name") + '</b></a></td></tr>').click(function() {that.pause(); that.currentTime=0; that.play();}));
+
         }
+        else {
 
-        counter++;
+            if (counter % 2 === 0) {
+                $("#doc2").append($('<tr><td colspan="2"></td></tr>'));
+            }
 
-        $("#doc").append($('<tr><td id="td' + audio.attr("key") + '">' + audio.attr("key") + '</td><td><a id="el' + audio.attr("key") + '" href="#"><b>' + audio.attr("name") + '</b></a></td></tr>').click(function() {that.pause(); that.currentTime=0; that.play();}));
+            $("#doc2").append($('<tr><td id="td' + audio.attr("key") + '">' + audio.attr("key") + '</td><td><a id="el' + audio.attr("key") + '" href="#"><b>' + audio.attr("name") + '</b></a></td></tr>').click(function() {that.pause(); that.currentTime=0; that.play();}));
+
+        }
 
         audio.on("ended", function() {
             $("#td" + audio.attr("key"))[0].style = "background-color: #fffffff";
         });
 
+        counter++;
     });
 
 });
