@@ -93,10 +93,14 @@ function stopAllAudio() {
 }
 
 function fadeOut() {
-    var v = $("audio")[0].volume - 0.010;
+    var v = $("audio")[0].volume - 0.008;
     if (v <= 0) {
        document.location.reload();
     }
-    $("audio")[0].volume = v;
-    $("audio")[1].volume = v;
+
+    for (var i=0; i < $("audio").length; i++) {
+        $("audio")[i].volume = v;
+    }
 }
+
+
